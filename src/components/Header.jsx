@@ -1,8 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AlbumContext } from "../context/AlbumContext";
+import { types } from "../types/types";
 
 const onIsActiveClassLink = ({ isActive }) => `${isActive ? "active" : ""}`;
 
 export const Header = () => {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(AlbumContext);
+
+  const onLogout = () => {
+    dispatch({
+      type: types.logout,
+    });
+
+    localStorage.removeItem("auth");
+
+    navigate("/login", {
+      replace: true,
+    });
+  };
+
   return (
     <>
       <nav
@@ -81,6 +99,12 @@ export const Header = () => {
                 </NavLink>
               </li>
             </ul>
+
+            <div>
+              <button className="btn btn-primary btn-sm" onClick={onLogout}>
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </nav>

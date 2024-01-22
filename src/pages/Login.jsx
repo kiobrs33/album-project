@@ -1,10 +1,34 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlbumContext } from "../context/AlbumContext";
+import { types } from "../types/types";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { dispatch } = useContext(AlbumContext);
+
+  const onLogin = () => {
+    dispatch({
+      type: types.login,
+      payload: {
+        userId: "12345678",
+        userName: "Rene Lozano Ramos",
+      },
+    });
+
+    localStorage.setItem(
+      "auth",
+      JSON.stringify({
+        isLogged: true,
+        userId: "12345678",
+        userName: "Rene Lozano Ramos",
+      })
+    );
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
+    onLogin();
     navigate("/", {
       replace: true,
     });

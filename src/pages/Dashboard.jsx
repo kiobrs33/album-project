@@ -1,4 +1,11 @@
+import { useContext } from "react";
+import { AlbumContext } from "../context/AlbumContext";
+
 export const Dashboard = () => {
+  const { state } = useContext(AlbumContext);
+
+  console.log("guy!", state)
+
   return (
     <div className="container mt-5">
       <div className="d-flex flex-column align-items-center ">
@@ -10,13 +17,8 @@ export const Dashboard = () => {
             alt="user-loged"
           />
         </span>
-        <h2>Rene Lozano</h2>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-          aliquid similique commodi eaque corporis ipsa rem aliquam natus? Totam
-          accusantium eius voluptas nesciunt, dolorum consectetur ducimus ex.
-          Dolor, perferendis sapiente.
-        </p>
+        <h2>{state.auth?.userName}</h2>
+        <p>Pin : {state.auth?.userId}</p>
         <button className="btn btn-secondary">Editar perfil</button>
       </div>
       <div className="container-fluid">
