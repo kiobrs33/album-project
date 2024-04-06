@@ -1,11 +1,17 @@
 import { types } from "../types/types";
 
-export const albumState = {
+export const albumInitialState = {
   auth: {
     isLogged: false,
-    userId: "",
-    userName: "",
+    token: "",
+    uid: "",
+    email: "",
+    name: "",
+    lastname: "",
+    role: "",
+    is_logged_google: false,
   },
+  collections: [],
   photos: [
     {
       id: 127352,
@@ -46,12 +52,10 @@ export const albumState = {
   ],
 };
 
-export const albumInitFun = () => {
+export const albumInitFunction = () => {
   // TODO : Cambiar funcionamiento por localStorage
-
   const auth = JSON.parse(localStorage.getItem("auth"));
-  console.log("HEREEEE!", auth)
-  return { ...albumState, auth: auth };
+  return { ...albumInitialState, auth: auth };
 };
 
 export const albumReducer = (initialState = {}, action) => {
@@ -60,7 +64,7 @@ export const albumReducer = (initialState = {}, action) => {
       return {
         ...initialState,
         auth: {
-          userId: action.payload.userId,
+          uid: action.payload.uid,
           userName: action.payload.userName,
           isLogged: true,
         },
@@ -69,7 +73,7 @@ export const albumReducer = (initialState = {}, action) => {
       return {
         ...initialState,
         auth: {
-          userId: initialState.userId,
+          uid: initialState.uid,
           userName: initialState.userName,
           isLogged: initialState.isLogged,
         },

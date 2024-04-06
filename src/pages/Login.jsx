@@ -2,28 +2,62 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlbumContext } from "../context/AlbumContext";
 import { types } from "../types/types";
+import { useForm } from "../hooks/useForm";
 
 export const Login = () => {
   const navigate = useNavigate();
   const { dispatch } = useContext(AlbumContext);
 
-  const onLogin = () => {
-    dispatch({
-      type: types.login,
-      payload: {
-        userId: "12345678",
-        userName: "Rene Lozano Ramos",
-      },
-    });
+  const { formValues, onChangeInput } = useForm({
+    email: "",
+    password: "",
+  });
 
-    localStorage.setItem(
-      "auth",
-      JSON.stringify({
-        isLogged: true,
-        userId: "12345678",
-        userName: "Rene Lozano Ramos",
-      })
-    );
+  const { email, password } = formValues;
+
+  const onLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        body: JSON.stringify(formValues),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const { token, user } = await response.json();
+      const { uid, email, name, lastname, role, is_logged_google, url_image } =
+        user;
+
+      console.log("**********************");
+      console.log(token, user);
+
+      dispatch({
+        type: types.login,
+        payload: {
+          uid,
+          token,
+          email,
+          name,
+          lastname,
+          role,
+          is_logged_google,
+          url_image,
+        },
+      });
+
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          isLogged: true,
+          uid,
+          name,
+          token,
+          url_image,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmit = (e) => {
@@ -53,6 +87,9 @@ export const Login = () => {
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Agregar correo electrónico"
+                name="email"
+                value={email}
+                onChange={onChangeInput}
               />
             </div>
             <div className="mb-3">
@@ -64,6 +101,9 @@ export const Login = () => {
                 className="form-control"
                 id="exampleInputPassword1"
                 placeholder="Agregar contraseña"
+                name="password"
+                value={password}
+                onChange={onChangeInput}
               />
             </div>
             <div className="d-flex justify-content-center">

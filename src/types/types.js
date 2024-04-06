@@ -3,4 +3,5 @@ export const types = {
   logout: "[AUTH] logout",
   addPhoto: "[ALBUM] addPhoto",
   editPhoto: "[ALBUM] editPhoto",
+  listPhotos: "[ALBUM] listPhotos",
 };

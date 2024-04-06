@@ -1,9 +1,23 @@
 import { useContext } from "react";
 import { CardItem } from "./CardItem";
 import { AlbumContext } from "../context/AlbumContext";
+import { useEffect } from "react";
+import { getPhotos } from "../utils/getData";
 
 export const ListCards = () => {
-  const { state } = useContext(AlbumContext);
+  const { state, setListPhotos } = useContext(AlbumContext);
+
+  const getListPhotos = async () => {
+    try {
+      getPhotos();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getListPhotos();
+  }, []);
 
   return (
     <div className="album py-5 bg-body-tertiary">
